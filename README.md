@@ -16,12 +16,6 @@ A comprehensive, responsive habit tracking web application built with HTML, CSS,
 - **Success Rates**: Calculate completion percentages for 7-day and 30-day periods
 - **Overall Progress**: View comprehensive statistics across all habits
 
-### Visual Progress Tracking
-- **Chart.js Integration**: Beautiful, responsive charts
-- **Weekly Overview**: Bar chart showing last 7 days
-- **Monthly Progress**: Line chart showing last 30 days
-- **Completion Grids**: Visual representation of daily completion status
-
 ### Notifications & Reminders
 - **Web Notifications API**: Browser-based notifications
 - **Custom Reminder Times**: Set specific times for each habit
@@ -94,24 +88,11 @@ A comprehensive, responsive habit tracking web application built with HTML, CSS,
 - Adaptive layout that adjusts to screen size
 - Touch-friendly interface for mobile users
 
-### Modern UI/UX
-- Clean, modern design with gradient backgrounds
-- Smooth animations and transitions
-- Intuitive navigation and interactions
-- Color-coded completion status
-
-### Accessibility
-- Keyboard navigation support
-- Screen reader friendly
-- High contrast elements
-- Clear visual feedback
-
 ## 📊 Technical Architecture
 
 ### Modular JavaScript Structure
 - **storage.js**: Handles all localStorage operations
 - **habits.js**: Manages habit logic and statistics
-- **charts.js**: Chart.js integration and visualization
 - **notifications.js**: Web Notifications API management
 - **ui.js**: User interface interactions and DOM manipulation
 - **app.js**: Main application lifecycle and coordination
@@ -152,11 +133,9 @@ A comprehensive, responsive habit tracking web application built with HTML, CSS,
 - localStorage support
 - ES6+ JavaScript features
 - Web Notifications API (optional)
-- Chart.js library (CDN)
 
 ## 📈 Performance Features
 
-- **Lazy Loading**: Charts only render when needed
 - **Efficient Storage**: Optimized localStorage usage
 - **Auto-save**: Prevents data loss
 - **Memory Management**: Proper cleanup of intervals and timeouts
@@ -171,74 +150,8 @@ habit-tracker/
 ├── js/
 │   ├── storage.js      # Storage management
 │   ├── habits.js       # Habit logic
-│   ├── charts.js       # Chart visualization
 │   ├── notifications.js # Notification handling
 │   ├── ui.js          # UI interactions
 │   └── app.js         # Main application
 └── README.md          # This file
 ```
-
-### Adding New Features
-1. Follow the modular structure
-2. Add new modules to the appropriate file
-3. Update the main app.js if needed
-4. Test thoroughly across browsers
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-**Notifications not working:**
-- Ensure notifications are enabled in browser settings
-- Check if the site has permission to send notifications
-- Try refreshing the page and re-enabling notifications
-
-**Data not saving:**
-- Check if localStorage is available in your browser
-- Ensure you're not in private/incognito mode
-- Clear browser cache and try again
-
-**Charts not displaying:**
-- Check internet connection (Chart.js is loaded from CDN)
-- Ensure JavaScript is enabled
-- Try refreshing the page
-
-### Debug Mode
-Open browser console and use:
-```javascript
-// View app statistics
-debugApp.getStats()
-
-// Export all data
-debugApp.exportData()
-
-// Test notifications
-debugApp.testNotification()
-
-// Clear all data
-debugApp.clearData()
-```
-
-## 📝 License
-
-This project is open source and available under the MIT License.
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
-
-## 📞 Support
-
-For issues, questions, or feature requests:
-1. Check the troubleshooting section
-2. Review browser compatibility
-3. Test in different browsers
-4. Create an issue with detailed information
-
----
-
-**Built with ❤️ using HTML, CSS, and JavaScript** 
