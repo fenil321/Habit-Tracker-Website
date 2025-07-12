@@ -50,7 +50,7 @@ class HabitTrackerApp {
      */
     initializeModules() {
         // Verify all required modules are available
-        if (!storage || !habitManager || !chartManager || !notificationManager || !uiManager) {
+        if (!storage || !habitManager || !notificationManager || !uiManager) {
             throw new Error('Required modules not loaded');
         }
 
@@ -59,9 +59,6 @@ class HabitTrackerApp {
         
         // Load habits
         habitManager.loadHabits();
-        
-        // Initialize charts
-        chartManager.initCharts();
         
         // Initialize notifications
         notificationManager.init();
@@ -104,9 +101,6 @@ class HabitTrackerApp {
             // Trigger a save by updating settings
             const settings = storage.getSettings();
             storage.saveSettings(settings);
-            
-            // Update charts if needed
-            chartManager.updateAllCharts();
             
         } catch (error) {
             console.error('Auto-save error:', error);
@@ -334,14 +328,13 @@ class HabitTrackerApp {
      * Cleanup resources
      */
     cleanup() {
+        // Clear intervals
         if (this.autoSaveInterval) {
             clearInterval(this.autoSaveInterval);
         }
         
-        notificationManager.clearAllReminders();
-        
-        // Destroy charts
-        chartManager.destroyAllCharts();
+        // Clear any other resources
+        this.isInitialized = false;
     }
 }
 

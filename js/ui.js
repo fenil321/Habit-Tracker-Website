@@ -538,7 +538,6 @@ class UIManager {
     refreshUI() {
         this.renderHabitsList();
         this.updateStatsDisplay();
-        chartManager.updateAllCharts();
     }
 
     /**
