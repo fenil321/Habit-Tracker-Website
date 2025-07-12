@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Habit Tracker</title>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS and DaisyUI CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.7.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      html { font-family: 'Inter', sans-serif; }
+      
+      /* Dynamic text color for progress rings */
+      .progress-text {
+        fill: #22223b;
+        transition: fill 0.3s ease;
+      }
+      
+      .dark .progress-text {
+        fill: #ffffff;
+      }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-950 to-gray-900 text-base-content">
+    <div class="container mx-auto px-4 py-10 max-w-5xl">
+        <!-- Header -->
+        <header class="flex flex-col md:flex-row justify-between items-center bg-base-200 rounded-2xl p-6 mb-8 shadow-lg gap-4">
+            <h1 class="text-3xl font-bold flex items-center gap-2 text-primary">
+                <i class="fas fa-chart-line"></i> Habit Tracker
+            </h1>
+            <div class="flex gap-3 flex-wrap items-center">
+                <button id="notificationBtn" class="btn btn-outline btn-primary">
+                    <i class="fas fa-bell"></i> Enable Notifications
+                </button>
+                <button id="addHabitBtn" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Add Habit
+                </button>
+                <button id="themeToggle" aria-label="Toggle dark and light mode" class="w-12 h-12 rounded-full flex items-center justify-center bg-base-200 shadow-lg border border-base-300 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary/60 group">
+                    <span class="absolute transition-all duration-500 ease-in-out text-2xl text-yellow-400 group-[.light]:opacity-100 group-[.dark]:opacity-0">☀️</span>
+                    <span class="absolute transition-all duration-500 ease-in-out text-2xl text-indigo-400 group-[.dark]:opacity-100 group-[.light]:opacity-0">☾</span>
+                </button>
+            </div>
+        </header>
+        <!-- Motivational Banner -->
+        <div id="motivationBanner" class="rounded-xl mb-8 px-6 py-4 bg-gradient-to-r from-purple-700 via-indigo-600 to-blue-600 shadow-lg flex items-center gap-4 animate-fadeIn">
+            <span class="text-3xl">💡</span>
+            <span id="motivationQuote" class="text-lg font-medium text-white"></span>
+        </div>
+
+        <!-- Stats Overview -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-10">
+            <div class="card bg-gradient-to-br from-purple-700 via-indigo-600 to-blue-600 shadow-xl hover:scale-105 hover:shadow-2xl transition-transform duration-300">
+                <div class="card-body text-center text-white">
+                    <div class="text-3xl mb-2">📋</div>
+                    <h3 class="text-base-content/70 font-semibold mb-1 text-white/80">Total Habits</h3>
+                    <p id="totalHabits" class="text-4xl font-bold">0</p>
+                </div>
+            </div>
+            <div class="card bg-gradient-to-br from-blue-700 via-cyan-600 to-teal-500 shadow-xl hover:scale-105 hover:shadow-2xl transition-transform duration-300">
+                <div class="card-body text-center text-white">
+                    <div class="text-3xl mb-2">✅</div>
+                    <h3 class="text-base-content/70 font-semibold mb-1 text-white/80">Today's Progress</h3>
+                    <p id="todayProgress" class="text-4xl font-bold">0%</p>
+                </div>
+            </div>
+            <div class="card bg-gradient-to-br from-orange-700 via-pink-600 to-fuchsia-500 shadow-xl hover:scale-105 hover:shadow-2xl transition-transform duration-300">
+                <div class="card-body text-center text-white">
+                    <div class="text-3xl mb-2">🔥</div>
+                    <h3 class="text-base-content/70 font-semibold mb-1 text-white/80">Best Streak</h3>
+                    <p id="bestStreak" class="text-4xl font-bold">0 days</p>
+                </div>
+            </div>
+            <div class="card bg-gradient-to-br from-green-700 via-emerald-600 to-teal-500 shadow-xl hover:scale-105 hover:shadow-2xl transition-transform duration-300">
+                <div class="card-body text-center text-white">
+                    <div class="text-3xl mb-2">🏆</div>
+                    <h3 class="text-base-content/70 font-semibold mb-1 text-white/80">Overall Success</h3>
+                    <p id="overallSuccess" class="text-4xl font-bold">0%</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Habits List -->
+        <section class="card bg-base-200 shadow-xl mb-8">
+            <div class="card-body">
+                <h2 class="text-2xl font-bold text-primary mb-6">Your Habits</h2>
+                <div id="habitsList" class="space-y-6">
+                    <!-- Habits will be dynamically added here -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Add/Edit Habit Modal -->
+    <div id="habitModal" class="modal modal-open">
+        <div class="modal-box w-full max-w-lg mx-auto">
+            <div class="flex justify-between items-center border-b border-base-300 pb-4 mb-4">
+                <h2 id="modalTitle" class="text-xl font-bold text-primary">Add New Habit</h2>
+                <button id="closeModal" class="btn btn-sm btn-circle btn-ghost">&times;</button>
+            </div>
+            <form id="habitForm" class="space-y-4">
+                <div>
+                    <label for="habitName" class="label">
+                        <span class="label-text font-semibold">Habit Name</span>
+                    </label>
+                    <input type="text" id="habitName" required placeholder="Enter habit name" class="input input-bordered w-full">
+                </div>
+                <div>
+                    <label for="habitDescription" class="label">
+                        <span class="label-text font-semibold">Description (optional)</span>
+                    </label>
+                    <textarea id="habitDescription" placeholder="Describe your habit" class="textarea textarea-bordered w-full"></textarea>
+                </div>
+                <div>
+                    <label for="habitTags" class="label">
+                        <span class="label-text font-semibold">Tags (comma separated)</span>
+                    </label>
+                    <input type="text" id="habitTags" placeholder="e.g. health, morning, fitness" class="input input-bordered w-full">
+                </div>
+                <div>
+                    <label for="habitFrequency" class="label">
+                        <span class="label-text font-semibold">Frequency</span>
+                    </label>
+                    <select id="habitFrequency" required class="select select-bordered w-full">
+                        <option value="daily">Daily</option>
+                        <option value="weekly">Weekly</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="reminderTime" class="label">
+                        <span class="label-text font-semibold">Daily Reminder Time (optional)</span>
+                    </label>
+                    <input type="time" id="reminderTime" class="input input-bordered w-full">
+                </div>
+                <div>
+                    <label for="reminderMessage" class="label">
+                        <span class="label-text font-semibold">Reminder Message</span>
+                    </label>
+                    <input type="text" id="reminderMessage" placeholder="Time to complete your habit!" value="Time to complete your habit!" class="input input-bordered w-full">
+                </div>
+                <div class="flex gap-3 pt-2">
+                    <button type="button" id="cancelBtn" class="btn btn-outline flex-1">Cancel</button>
+                    <button type="submit" class="btn btn-primary flex-1">Save Habit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Habit Details Modal -->
+    <div id="detailsModal" class="modal modal-open">
+        <div class="modal-box w-full max-w-xl mx-auto">
+            <div class="flex justify-between items-center border-b border-base-300 pb-4 mb-4">
+                <h2 id="detailsTitle" class="text-xl font-bold text-primary">Habit Details</h2>
+                <button id="closeDetailsModal" class="btn btn-sm btn-circle btn-ghost">&times;</button>
+            </div>
+            <div id="habitDetails" class="w-full">
+                <!-- Habit details will be dynamically added here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Permission Toast -->
+    <div id="notificationToast" class="toast toast-top toast-end hidden">
+        <div class="alert alert-success">
+            <i class="fas fa-info-circle"></i>
+            <span id="toastMessage">Notifications enabled!</span>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/habits.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html> 
