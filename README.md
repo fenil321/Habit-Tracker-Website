@@ -25,7 +25,6 @@ A comprehensive, responsive habit tracking web application built with HTML, CSS,
 
 ### Data Management
 - **localStorage Persistence**: All data saved locally in browser
-- **Data Export/Import**: Backup and restore your data
 - **Auto-save**: Automatic data saving every 30 seconds
 - **Offline Support**: Works completely offline
 
